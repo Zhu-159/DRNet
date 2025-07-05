@@ -13,14 +13,14 @@ def sample_with_j(k, n, j):
         raise ValueError("n must be less than k.")
     if j < 0 or j > k:
         raise ValueError("j must be in the range 0 to k.")
-    # Create a list containing numbers from 0 to k
+
     numbers = list(range(k))
-    # Ensure j is in the number list
+
     if j not in numbers:
         raise ValueError("j must be in the range 0 to k.")
-    # Select j from the number list
+
     sample = [j]
-    # Select n-1 numbers from the remaining numbers
+
     remaining = [num for num in numbers if num != j]
     sample.extend(random.sample(remaining, n - 1))
     return sample
@@ -50,7 +50,6 @@ class FCR(nn.Module):
         if fft_result.dim() > x.dim():
             fft_result = torch.sqrt(fft_result[..., 0] ** 2 + fft_result[..., 1] ** 2)
 
-        # Apply L2 normalization
         eps = 1e-8
         norm = torch.norm(fft_result, p=2, dim=1, keepdim=True)
         fft_norm = fft_result / (norm + eps)
@@ -191,11 +190,9 @@ def evaluate_metric(model, loader, device, epoch):
 
             torch.cuda.empty_cache()
 
-    # Merge results from all batches
     all_y_true = np.concatenate(all_y_true)
     all_y_score = np.concatenate(all_y_score)
 
-    # Calculate AUC and AUPR
     fpr, tpr, _ = metrics.roc_curve(all_y_true, all_y_score)
     roc_auc = metrics.auc(fpr, tpr)
 
