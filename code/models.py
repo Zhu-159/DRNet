@@ -107,12 +107,10 @@ class DRNet(torch.nn.Module):
         self.dropout_e = dropout_e
         self.force_undirected = force_undirected
 
-        # Graph convolution layers
         self.conv1 = gconv(dataset.num_features, latent_dim[0])
         self.conv2 = gconv(latent_dim[0], latent_dim[1])
         self.conv3 = gconv(latent_dim[1], latent_dim[2])
 
-        # KAF activation functions
         self.kaf1 = kaf.KAF(latent_dim[0], D=20, kernel='gaussian')
         self.kaf2 = kaf.KAF(latent_dim[1], D=20, kernel='gaussian')
         self.kaf3 = kaf.KAF(latent_dim[2], D=20, kernel='gaussian')
