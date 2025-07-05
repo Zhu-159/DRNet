@@ -9,38 +9,6 @@ import torch.nn.functional as F
 
 
 class KAF(nn.Module):
-    """ Implementation of the kernel activation function.
-    
-    Parameters
-    ----------
-    num_parameters: int
-        Size of the layer (number of neurons).
-    D: int, optional
-        Size of the dictionary for each neuron. Default to 20.
-    conv: bool, optional
-        True if this is a convolutive layer, False for a feedforward layer. Default to False.
-    boundary: float, optional
-        Dictionary elements are sampled uniformly in [-boundary, boundary]. Default to 4.0.
-    init_fcn: None or func, optional
-        If None, elements are initialized randomly. Otherwise, elements are initialized to approximate given function.
-    kernel: {'gauss', 'relu', 'softplus'}, optional
-        Kernel function to be used. Defaults to 'gaussian'.
-    
-    Example
-    ----------
-    Neural network with one hidden layer with KAF nonlinearities:
-        
-    >>> net = Sequential([nn.Linear(10, 20), KAF(20), nn.Linear(20, 1)])
-    
-    References
-    ----------
-    [1] Scardapane, S., Van Vaerenbergh, S., Totaro, S. and Uncini, A., 2019. 
-        Kafnets: kernel-based non-parametric activation functions for neural networks. 
-        Neural Networks, 110, pp. 19-32.
-    [2] Marra, G., Zanca, D., Betti, A. and Gori, M., 2018. 
-        Learning Neuron Non-Linearities with Kernel-Based Deep Neural Networks. 
-        arXiv preprint arXiv:1807.06302.
-    """
 
     def __init__(self, num_parameters, D=20, conv=False, boundary=4.0, init_fcn=None, kernel='gaussian'):
 
