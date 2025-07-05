@@ -1,17 +1,8 @@
 import argparse
-import numpy as np
-import torch
-import sys
-import os
-
-# Add current directory to Python path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 from train_eval import *
 from models import *
 from util_functions import load_k_fold, MyDynamicDataset
 
-# Arguments
 parser = argparse.ArgumentParser(description='DRNet')
 
 parser.add_argument('--data-name', default='Gdataset',
