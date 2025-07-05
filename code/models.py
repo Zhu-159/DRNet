@@ -164,37 +164,30 @@ class DRNet(torch.nn.Module):
     def forward(self, data):
         x, edge_index, batch = data.x, data.edge_index, data.batch
 
-        # Edge dropout
         edge_index, _ = dropout_adj(
             edge_index, p=self.dropout_e,
             force_undirected=self.force_undirected, num_nodes=len(x),
             training=self.training
         )
 
-        # First graph convolution + semantic attention + structural attention
         x1 = self.kaf1(self.conv1(x, edge_index))
         x1 = self.semantic_attn1(x1)
         x1 = self.structural_attn1(x1, batch)
 
-        # Second graph convolution + semantic attention + structural attention
         x2 = self.kaf2(self.conv2(x1, edge_index))
         x2 = self.semantic_attn2(x2)
         x2 = self.structural_attn2(x2, batch)
 
-        # Third graph convolution + semantic attention + structural attention
         x3 = self.kaf3(self.conv3(x2, edge_index))
         x3 = self.semantic_attn3(x3)
         x3 = self.structural_attn3(x3, batch)
 
-        # Feature fusion
         X = [x1, x2, x3]
         concat_states = torch.cat(X, 1)
 
-        # Sort pooling
         x = global_sort_pool(concat_states, batch, self.k)
         x = x.unsqueeze(1)
-
-        # 1D convolution processing
+        
         x = self.conv1d_params1(x)
         x = F.relu(x)
         x = self.maxpool1d(x)
@@ -202,7 +195,6 @@ class DRNet(torch.nn.Module):
         x = self.conv1d_params2(x)
         x = F.relu(x)
 
-        # Fully connected layer processing
         x = x.view(len(x), -1)
 
         x = F.relu(self.lin1(x))
